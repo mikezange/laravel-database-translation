@@ -1,0 +1,24 @@
+{
+    "name": "mike-zange/laravel-database-translation",
+    "description": "A Laravel package to load translation strings from database with fallback to file system",
+
+    "keywords": ["laravel", "translation", "language", "database"],
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "laravel/framework": "~5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "MikeZange\\LaravelDatabaseTranslation\\": "src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Zange",
+            "email": "mike.zange.1@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
