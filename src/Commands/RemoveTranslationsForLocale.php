@@ -6,8 +6,7 @@ use Illuminate\Console\Command;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
 
 /**
- * Class RemoveTranslationsForLocale
- * @package MikeZange\LaravelDatabaseTranslation\Commands
+ * Class RemoveTranslationsForLocale.
  */
 class RemoveTranslationsForLocale extends Command
 {
@@ -26,14 +25,14 @@ class RemoveTranslationsForLocale extends Command
     protected $description = 'Removes the translations from the DB for a given locale';
 
     /**
-     * Translation repository
+     * Translation repository.
      *
      * @var TranslationRepository
      */
     protected $translationRepository;
 
     /**
-     * Locale
+     * Locale.
      *
      * @var string
      */

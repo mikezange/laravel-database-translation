@@ -2,20 +2,18 @@
 
 namespace MikeZange\LaravelDatabaseTranslation\Loaders;
 
-use Illuminate\Support\Collection;
+use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\LoaderInterface;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
-use Illuminate\Cache\Repository as CacheRepository;
 
 /**
- * Class DatabaseLoader
- * @package MikeZange\LaravelDatabaseTranslation\Loaders
+ * Class DatabaseLoader.
  */
 class DatabaseLoader implements LoaderInterface
 {
-
     /**
      * The filesystem instance.
      *
@@ -64,7 +62,7 @@ class DatabaseLoader implements LoaderInterface
      * @param Filesystem $filesystem
      * @param $path
      * @param TranslationRepository $translationRepository
-     * @param CacheRepository $cache
+     * @param CacheRepository       $cache
      */
     public function __construct(
         Filesystem $filesystem,
@@ -80,11 +78,12 @@ class DatabaseLoader implements LoaderInterface
     }
 
     /**
-     * Load the messages for the given locale
+     * Load the messages for the given locale.
      *
-     * @param  string  $locale
-     * @param  string  $group
-     * @param  string  $namespace
+     * @param string $locale
+     * @param string $group
+     * @param string $namespace
+     *
      * @return array
      */
     public function load($locale, $group, $namespace = null)
@@ -99,11 +98,12 @@ class DatabaseLoader implements LoaderInterface
 
     /**
      * Get the messages for the given locale from the database and merge
-     * them with the file based ones as a fallback for a given locale
+     * them with the file based ones as a fallback for a given locale.
      *
-     * @param  string  $locale
-     * @param  string  $group
-     * @param  string  $namespace
+     * @param string $locale
+     * @param string $group
+     * @param string $namespace
+     *
      * @return array
      */
     protected function loadCombinedTranslations($locale, $group, $namespace)
@@ -117,8 +117,9 @@ class DatabaseLoader implements LoaderInterface
     /**
      * Add a new namespace to the loader.
      *
-     * @param  string  $namespace
-     * @param  string  $hint
+     * @param string $namespace
+     * @param string $hint
+     *
      * @return void
      */
     public function addNamespace($namespace, $hint)
@@ -138,11 +139,12 @@ class DatabaseLoader implements LoaderInterface
     }
 
     /**
-     * Load the required translations from the database
+     * Load the required translations from the database.
      *
      * @param string $locale
      * @param string $group
      * @param string $namespace
+     *
      * @return array
      */
     protected function loadFromDatabase($locale, $group, $namespace)
@@ -157,8 +159,9 @@ class DatabaseLoader implements LoaderInterface
     /**
      * Load a non-namespaced translation group.
      *
-     * @param  string  $locale
-     * @param  string  $group
+     * @param string $locale
+     * @param string $group
+     *
      * @return array
      */
     protected function loadGroup($locale, $group)
@@ -175,9 +178,10 @@ class DatabaseLoader implements LoaderInterface
     /**
      * Load a namespaced translation group.
      *
-     * @param  string  $locale
-     * @param  string  $group
-     * @param  string  $namespace
+     * @param string $locale
+     * @param string $group
+     * @param string $namespace
+     *
      * @return array
      */
     protected function loadNamespaced($locale, $namespace, $group)
@@ -191,12 +195,12 @@ class DatabaseLoader implements LoaderInterface
         return [];
     }
 
-
     /**
-     * Create a formatted array as if it was coming from the default loader
+     * Create a formatted array as if it was coming from the default loader.
      *
-     * @param  Collection  $translations
-     * @param  string  $locale
+     * @param Collection $translations
+     * @param string     $locale
+     *
      * @return array
      */
     protected function createFormattedArray($translations, $locale)
@@ -216,19 +220,20 @@ class DatabaseLoader implements LoaderInterface
 
     /**
      * Grab the value of the translation for the selected locale
-     * and then attempt the fallback locale
+     * and then attempt the fallback locale.
      *
-     * @param  string  $locale
-     * @param  Collection  $values
-     * @return string|boolean
+     * @param string     $locale
+     * @param Collection $values
+     *
+     * @return string|bool
      */
     protected function getValueForLocale($values, $locale)
     {
-        if (! $this->checkLocaleExists($values, $locale)) {
+        if (!$this->checkLocaleExists($values, $locale)) {
             return false;
         }
 
-        if (! $this->checkLocaleExists($values, config('app.fallback_locale'))) {
+        if (!$this->checkLocaleExists($values, config('app.fallback_locale'))) {
             return false;
         }
 
@@ -237,11 +242,12 @@ class DatabaseLoader implements LoaderInterface
 
     /**
      * Check to see if the locale is contained in the translation json,
-     * if not check for fallback
+     * if not check for fallback.
      *
-     * @param  Collection  $values
-     * @param  string  $locale
-     * @return boolean
+     * @param Collection $values
+     * @param string     $locale
+     *
+     * @return bool
      */
     protected function checkLocaleExists($values, $locale)
     {
@@ -253,7 +259,7 @@ class DatabaseLoader implements LoaderInterface
     }
 
     /**
-     * Get the loaded Laravel File loader
+     * Get the loaded Laravel File loader.
      *
      * @return FileLoader
      */
