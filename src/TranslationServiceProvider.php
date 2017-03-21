@@ -2,17 +2,16 @@
 
 namespace MikeZange\LaravelDatabaseTranslation;
 
+use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Support\ServiceProvider as ServiceProvider;
+use Illuminate\Translation\Translator;
 use MikeZange\LaravelDatabaseTranslation\Commands\LoadTranslationsFromFiles;
 use MikeZange\LaravelDatabaseTranslation\Commands\RemoveTranslationsForLocale;
 use MikeZange\LaravelDatabaseTranslation\Loaders\DatabaseLoader;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
-use Illuminate\Cache\Repository as CacheRepository;
-use Illuminate\Translation\Translator;
 
 /**
- * Class TranslationServiceProvider
- * @package MikeZange\LaravelDatabaseTranslation
+ * Class TranslationServiceProvider.
  */
 class TranslationServiceProvider extends ServiceProvider
 {
@@ -44,7 +43,7 @@ class TranslationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/database.translations.php', 'database.translations');
+        $this->mergeConfigFrom(__DIR__.'/../config/database.translations.php', 'database.translations');
 
         $this->registerLoader();
 
@@ -65,7 +64,7 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the translation loader
+     * Register the translation loader.
      *
      * @return void
      */

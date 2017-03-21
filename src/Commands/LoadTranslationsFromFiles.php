@@ -8,8 +8,7 @@ use Illuminate\Translation\FileLoader;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
 
 /**
- * Class LoadTranslationsFromFiles
- * @package MikeZange\LaravelDatabaseTranslation\Commands
+ * Class LoadTranslationsFromFiles.
  */
 class LoadTranslationsFromFiles extends Command
 {
@@ -28,28 +27,28 @@ class LoadTranslationsFromFiles extends Command
     protected $description = 'Loads the translations from file into the DB for a given locale';
 
     /**
-     * The Laravel File Loader
+     * The Laravel File Loader.
      *
      * @var FileLoader
      */
     protected $laravelLoader;
 
     /**
-     * Translation repository
+     * Translation repository.
      *
      * @var TranslationRepository
      */
     protected $translationRepository;
 
     /**
-     * Laravel Filesystem
+     * Laravel Filesystem.
      *
      * @var Filesystem
      */
     protected $filesystem;
 
     /**
-     * The locale
+     * The locale.
      *
      * @var string
      */
@@ -58,7 +57,7 @@ class LoadTranslationsFromFiles extends Command
     /**
      * Create a new command instance.
      *
-     * @param Filesystem $filesystem
+     * @param Filesystem            $filesystem
      * @param TranslationRepository $translationRepository
      */
     public function __construct(Filesystem $filesystem, TranslationRepository $translationRepository)
@@ -89,11 +88,10 @@ class LoadTranslationsFromFiles extends Command
 
     protected function loadGroupLines()
     {
-        $langFiles = $this->getLangFiles(resource_path() . '/lang');
+        $langFiles = $this->getLangFiles(resource_path().'/lang');
 
         $this->processFiles($langFiles);
     }
-
 
     protected function loadNameSpacedLines()
     {
@@ -117,7 +115,8 @@ class LoadTranslationsFromFiles extends Command
     }
 
     /**
-     * Load the lines into the database
+     * Load the lines into the database.
+     *
      * @param $lines
      * @param $namespace
      * @param $group
@@ -132,11 +131,11 @@ class LoadTranslationsFromFiles extends Command
             } else {
                 $attributes = [
                     'namespace' => $namespace,
-                    'group' => $group,
-                    'key' => $key,
-                    'values' => [
-                        "{$locale}" => $value
-                    ]
+                    'group'     => $group,
+                    'key'       => $key,
+                    'values'    => [
+                        "{$locale}" => $value,
+                    ],
                 ];
                 $this->translationRepository->create($attributes);
             }
@@ -151,6 +150,7 @@ class LoadTranslationsFromFiles extends Command
     protected function getGroup($file)
     {
         preg_match('/'.$this->locale.'\/([^\[]+).php/i', $file, $group);
+
         return $group[1];
     }
 
@@ -183,6 +183,6 @@ class LoadTranslationsFromFiles extends Command
      */
     protected function getLocaleDirPath($path)
     {
-        return $path . '/' . $this->locale;
+        return $path.'/'.$this->locale;
     }
 }

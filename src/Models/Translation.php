@@ -5,19 +5,18 @@ namespace MikeZange\LaravelDatabaseTranslation\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Translation
- * @package MikeZange\LaravelDatabaseTranslation\Models
+ * Class Translation.
  */
 class Translation extends Model
 {
     protected $table;
 
     /**
-     *  List of variables that can be mass assigned
+     *  List of variables that can be mass assigned.
+     *
      *  @var array
      */
     protected $fillable = ['namespace', 'group', 'key', 'values'];
-
 
     /**
      * Translation constructor.
@@ -37,7 +36,7 @@ class Translation extends Model
      */
     public function getValuesAttribute($value)
     {
-        return (array)json_decode($value);
+        return (array) json_decode($value);
     }
 
     /**

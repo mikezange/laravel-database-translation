@@ -1,19 +1,22 @@
-<?php namespace MikeZange\LaravelDatabaseTranslation\Repositories;
+<?php
+
+namespace MikeZange\LaravelDatabaseTranslation\Repositories;
 
 use Illuminate\Foundation\Application;
 use MikeZange\LaravelDatabaseTranslation\Models\Translation;
 
 /**
- * Class TranslationRepository
- * @package MikeZange\LaravelDatabaseTranslation\Repositories
+ * Class TranslationRepository.
  */
 class TranslationRepository
 {
     protected $model;
     protected $app;
     protected $errors = null;
+
     /**
-     *  Constructor
+     *  Constructor.
+     *
      *  @param Application $app
      */
     public function __construct(Application $app)
@@ -33,9 +36,9 @@ class TranslationRepository
     }
 
     /**
-     *  Check if the model's table exists
+     *  Check if the model's table exists.
      *
-     *  @return boolean
+     *  @return bool
      */
     public function tableExists()
     {
@@ -46,7 +49,8 @@ class TranslationRepository
      *  Retrieve all entries.
      *
      *  @param array $related Related object to include.
-     *  @param integer $perPage Number of records to retrieve per page. If zero the whole result set is returned.
+     *  @param int $perPage Number of records to retrieve per page. If zero the whole result set is returned.
+     *
      *  @return \Illuminate\Database\Eloquent\Model
      */
     public function all($related = [], $perPage = 0)
@@ -59,7 +63,8 @@ class TranslationRepository
     /**
      *  Retrieve a single entry by id.
      *
-     *  @param integer $id
+     *  @param int $id
+     *
      *  @return \Illuminate\Database\Eloquent\Model
      */
     public function find($id, $related = [])
@@ -71,7 +76,8 @@ class TranslationRepository
      *  Remove an entry.
      *
      *  @param  string $id
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function delete($id)
     {
@@ -79,13 +85,14 @@ class TranslationRepository
         if (!$model) {
             return false;
         }
+
         return $model->delete();
     }
 
     /**
      *  Returns total number of entries in DB.
      *
-     *  @return integer
+     *  @return int
      */
     public function count()
     {
@@ -93,10 +100,11 @@ class TranslationRepository
     }
 
     /**
-     *  Return all items for a given namespace and group
+     *  Return all items for a given namespace and group.
      *
      *  @param  string $namespace
      *  @param  string $group
+     *
      *  @return \Illuminate\Database\Eloquent\Collection
      */
     public function getItems($namespace, $group)
@@ -108,11 +116,12 @@ class TranslationRepository
     }
 
     /**
-     *  Return a specific item with its translation for a given namespace, group and key
+     *  Return a specific item with its translation for a given namespace, group and key.
      *
      *  @param  string $namespace
      *  @param  string $group
      *  @param  string $key
+     *
      *  @return \Illuminate\Database\Eloquent\Builder
      */
     public function getItem($namespace, $group, $key)
@@ -126,25 +135,26 @@ class TranslationRepository
 
     /**
      *  Insert a new translation into the database.
-     *  If the attributes are not valid
+     *  If the attributes are not valid.
      *
      *  @param  array $attributes
-     *  @return boolean
+     *
+     *  @return bool
      **/
-
     public function create(array $attributes)
     {
         return $this->validate($attributes) ? $this->model->create($attributes) : null;
     }
 
     /**
-     *  Update the translations of an existing key and locale by id
+     *  Update the translations of an existing key and locale by id.
      *
-     *  @param integer $id
+     *  @param int $id
      *  @param string $locale
      *  @param string $value
      *  @param bool $overwrite
-     *  @return boolean
+     *
+     *  @return bool
      **/
     public function updateById($id, $locale, $value, $overwrite = true)
     {
@@ -153,13 +163,14 @@ class TranslationRepository
     }
 
     /**
-     *  Update the translations of an existing key and locale
+     *  Update the translations of an existing key and locale.
      *
      *  @param  Translation $line
      *  @param  string $locale
      *  @param  string $value
      *  @param  bool $overwrite
-     *  @return boolean
+     *
+     *  @return bool
      **/
     public function updateTranslations(Translation $line, $locale, $value, $overwrite = true)
     {
@@ -187,18 +198,19 @@ class TranslationRepository
     }
 
     /**
-     *  Validate the given attributes
+     *  Validate the given attributes.
      *
      *  @param  array    $attributes
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function validate(array $attributes)
     {
-        $table     = $this->model->getTable();
+        $table = $this->model->getTable();
         $namespace = array_get($attributes, 'namespace');
-        $group     = array_get($attributes, 'group');
+        $group = array_get($attributes, 'group');
 
-        $rules     = [
+        $rules = [
             'group'     => 'required',
             'key'       => "required|unique:{$table},key,NULL,id,namespace,{$namespace},group,{$group}",
         ];
@@ -207,6 +219,7 @@ class TranslationRepository
 
         if ($validator->fails()) {
             $this->errors = $validator->errors();
+
             return false;
         }
 
