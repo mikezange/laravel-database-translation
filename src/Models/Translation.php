@@ -3,12 +3,15 @@
 namespace MikeZange\LaravelDatabaseTranslation\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use MikeZange\LaravelDatabaseTranslation\Translatable;
 
 /**
  * Class Translation.
  */
 class Translation extends Model
 {
+    use Translatable;
+
     protected $table;
 
     /**
@@ -17,6 +20,8 @@ class Translation extends Model
      *  @var array
      */
     protected $fillable = ['namespace', 'group', 'key', 'values'];
+
+    public $translatable = ['values'];
 
     /**
      * Translation constructor.
@@ -27,23 +32,5 @@ class Translation extends Model
     {
         $this->table = config('database.translations.table');
         parent::__construct($attributes);
-    }
-
-    /**
-     * @param $value
-     *
-     * @return array
-     */
-    public function getValuesAttribute($value)
-    {
-        return (array) json_decode($value);
-    }
-
-    /**
-     * @param $value
-     */
-    public function setValuesAttribute($value)
-    {
-        $this->attributes['values'] = json_encode($value);
     }
 }

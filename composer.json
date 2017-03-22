@@ -5,7 +5,8 @@
     "type": "library",
     "require": {
         "php": ">=7.0",
-        "laravel/framework": "~5.4"
+        "laravel/framework": "~5.4",
+        "spatie/laravel-translatable": "^1.2"
     },
     "autoload": {
         "psr-4": {

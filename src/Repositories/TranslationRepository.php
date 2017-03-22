@@ -19,7 +19,8 @@ class TranslationRepository
     /**
      *  Constructor.
      *
-     *  @param Application $app
+     * @param Application $app
+     * @param CacheRepository $cache
      */
     public function __construct(Application $app, CacheRepository $cache)
     {
@@ -70,9 +71,9 @@ class TranslationRepository
      *
      *  @return \Illuminate\Database\Eloquent\Model
      */
-    public function find($id, $related = [])
+    public function find($id)
     {
-        return $this->model->with($related)->find($id);
+        return $this->model->find($id);
     }
 
     /**
@@ -85,6 +86,7 @@ class TranslationRepository
     public function delete($id)
     {
         $model = $this->model->where('id', $id)->first();
+
         if (!$model) {
             return false;
         }
@@ -159,10 +161,10 @@ class TranslationRepository
      *
      *  @return bool
      **/
-    public function updateById($id, $locale, $value, $overwrite = true)
+    public function updateById($id, $locale, $value, $overwrite = true) : bool
     {
         $line = $this->model->find($id);
-        $this->updateTranslations($line, $locale, $value, $overwrite = true);
+        return $this->updateTranslation($line, $locale, $value, $overwrite);
     }
 
     /**
@@ -175,29 +177,22 @@ class TranslationRepository
      *
      *  @return bool
      **/
-    public function updateTranslations(Translation $line, $locale, $value, $overwrite = true)
+    public function updateTranslation(Translation $line, $locale, $value, $overwrite = true) : bool
     {
-        $translations = $line->values;
-
-        if ($overwrite) {
-            $translations[$locale] = $value;
-        } else {
-            if (!array_has($translations, $locale)) {
-                $translations = array_merge($translations, ["{$locale}" => $value]);
-            }
+        if (empty($line->getTranslation('values', $locale)) || $overwrite) {
+            $line->setTranslation('values', $locale, $value);
         }
-        $this->cache->forget("translations.{$locale}.{$line->namespace}.{$line->group}");
-        $line->values = $translations;
 
         return $this->save($line);
     }
 
     /**
      * @param Translation $translation
+     * @return bool
      */
-    public function save(Translation $translation)
+    public function save(Translation $translation) : bool
     {
-        $translation->save();
+        return $translation->save();
     }
 
     /**
@@ -207,7 +202,7 @@ class TranslationRepository
      *
      *  @return bool
      */
-    public function validate(array $attributes)
+    public function validate(array $attributes) : bool
     {
         $table = $this->model->getTable();
         $namespace = array_get($attributes, 'namespace');

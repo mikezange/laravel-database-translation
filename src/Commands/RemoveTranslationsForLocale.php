@@ -71,14 +71,8 @@ class RemoveTranslationsForLocale extends Command
     protected function processLines($lines)
     {
         foreach ($lines as $line) {
-            $values = $line->values;
-            if (array_has($values, $this->locale)) {
-                array_forget($values, $this->locale);
-
-                $line->values = $values;
-
-                $this->translationRepository->save($line);
-            }
+            $line->forgetTranslation('values', $this->locale);
+            $this->translationRepository->save($line);
         }
     }
 }
