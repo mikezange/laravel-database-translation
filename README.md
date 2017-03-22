@@ -1,3 +1,5 @@
+[![StyleCI](https://styleci.io/repos/85751920/shield?branch=master)](https://styleci.io/repos/85751920)
+
 #Laravel Database Translations
 
 ## Description
@@ -53,7 +55,7 @@ There are 2 included methods for updating translations via the translations repo
 
 2. `$translationRepository->updateTranslations(Translation $line, $locale, $value, $overwrite = true)`
 
-The second method requires and instance of the translation model.
+The second method requires an instance of the translation model.
 
 The optional 4th parameter controls whether the new translation will overwrite the old one if it exists, default is `true`
 
