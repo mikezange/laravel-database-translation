@@ -1,4 +1,6 @@
-[![StyleCI](https://styleci.io/repos/85751920/shield?branch=master)](https://styleci.io/repos/85751920)
+[![StyleCI](https://styleci.io/repos/85751920/shield?branch=master)](https://styleci.io/repos/85751920) 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MikeZange/laravel-database-translations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MikeZange/laravel-database-translations/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/MikeZange/laravel-database-translations/badges/build.png?b=master)](https://scrutinizer-ci.com/g/MikeZange/laravel-database-translations/build-status/master)
 
 #Laravel Database Translations
 
