@@ -19,7 +19,7 @@ class TranslationRepository
     /**
      *  Constructor.
      *
-     * @param Application $app
+     * @param Application     $app
      * @param CacheRepository $cache
      */
     public function __construct(Application $app, CacheRepository $cache)
@@ -164,6 +164,7 @@ class TranslationRepository
     public function updateById($id, $locale, $value, $overwrite = true) : bool
     {
         $line = $this->model->find($id);
+
         return $this->updateTranslation($line, $locale, $value, $overwrite);
     }
 
@@ -188,6 +189,7 @@ class TranslationRepository
 
     /**
      * @param Translation $translation
+     *
      * @return bool
      */
     public function save(Translation $translation) : bool

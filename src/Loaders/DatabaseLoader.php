@@ -43,7 +43,6 @@ class DatabaseLoader implements LoaderInterface
      */
     protected $cacheEnabled;
 
-
     /**
      * All of the namespace hints.
      *
@@ -221,7 +220,7 @@ class DatabaseLoader implements LoaderInterface
             foreach ($translations as $translation) {
                 $value = $translation->getTranslation('values', $locale, true);
 
-                if (! empty($value)) {
+                if (!empty($value)) {
                     array_set($array, $translation->key, $value);
                 }
             }
