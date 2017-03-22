@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\LoaderInterface;
+use MikeZange\LaravelDatabaseTranslation\Models\Translation;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
 
 /**
@@ -34,6 +35,14 @@ class DatabaseLoader implements LoaderInterface
      * @var CacheRepository
      */
     protected $cache;
+
+    /**
+     * Is cache enabled.
+     *
+     * @var bool
+     */
+    protected $cacheEnabled;
+
 
     /**
      * All of the namespace hints.
@@ -72,9 +81,13 @@ class DatabaseLoader implements LoaderInterface
     ) {
         $this->files = $filesystem;
         $this->path = $path;
+
         $this->translationRepository = $translationRepository;
-        $this->cache = $cache;
+
         $this->laravelFileLoader = new FileLoader($this->files, $this->path);
+
+        $this->cache = $cache;
+        $this->cacheEnabled = config('database.translations.cache_enabled');
     }
 
     /**
@@ -86,19 +99,17 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    public function load($locale, $group, $namespace = null)
+    public function load($locale, $group, $namespace = null) : array
     {
-        $cacheEnabled = config('database.translations.cache_enabled');
-
-        if (!$cacheEnabled) {
-            return $this->loadCombinedTranslations($locale, $group, $namespace);
-        }
-
         $cacheKey = "translations.{$locale}.{$namespace}.{$group}";
 
-        $translations = $this->cache->remember($cacheKey, 1440, function () use ($locale, $namespace, $group) {
-            return $this->loadCombinedTranslations($locale, $group, $namespace);
-        });
+        if (!$this->cacheEnabled) {
+            $translations = $this->loadCombinedTranslations($locale, $group, $namespace);
+        } else {
+            $translations = $this->cache->remember($cacheKey, 1440, function () use ($locale, $namespace, $group) {
+                return $this->loadCombinedTranslations($locale, $group, $namespace);
+            });
+        }
 
         return $translations;
     }
@@ -113,7 +124,7 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    protected function loadCombinedTranslations($locale, $group, $namespace)
+    protected function loadCombinedTranslations($locale, $group, $namespace) : array
     {
         return array_replace_recursive(
             $this->laravelFileLoader->load($locale, $group, $namespace),
@@ -140,7 +151,7 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    public function namespaces()
+    public function namespaces() : array
     {
         return $this->hints;
     }
@@ -154,7 +165,7 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    protected function loadFromDatabase($locale, $group, $namespace)
+    protected function loadFromDatabase($locale, $group, $namespace) : array
     {
         if (is_null($namespace) || $namespace == '*') {
             return $this->loadGroup($locale, $group);
@@ -171,15 +182,11 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    protected function loadGroup($locale, $group)
+    protected function loadGroup($locale, $group) : array
     {
         $translations = $this->translationRepository->getItems(null, $group);
 
-        if ($translations) {
-            return $this->createFormattedArray($translations, $locale);
-        }
-
-        return [];
+        return $this->createFormattedArray($translations, $locale);
     }
 
     /**
@@ -191,15 +198,11 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    protected function loadNamespaced($locale, $namespace, $group)
+    protected function loadNamespaced($locale, $namespace, $group) : array
     {
         $translations = $this->translationRepository->getItems($namespace, $group);
 
-        if ($translations) {
-            return $this->createFormattedArray($translations, $locale);
-        }
-
-        return [];
+        return $this->createFormattedArray($translations, $locale);
     }
 
     /**
@@ -210,15 +213,17 @@ class DatabaseLoader implements LoaderInterface
      *
      * @return array
      */
-    protected function createFormattedArray($translations, $locale)
+    protected function createFormattedArray($translations, $locale) : array
     {
         $array = [];
 
-        foreach ($translations as $translation) {
-            $values = collect($translation->values)->toArray();
-            $value = $this->getValueForLocale($values, $locale);
-            if ($value) {
-                array_set($array, $translation->key, $value);
+        if ($translations) {
+            foreach ($translations as $translation) {
+                $value = $translation->getTranslation('values', $locale, true);
+
+                if (! empty($value)) {
+                    array_set($array, $translation->key, $value);
+                }
             }
         }
 
@@ -226,51 +231,11 @@ class DatabaseLoader implements LoaderInterface
     }
 
     /**
-     * Grab the value of the translation for the selected locale
-     * and then attempt the fallback locale.
-     *
-     * @param string     $locale
-     * @param Collection $values
-     *
-     * @return string|bool
-     */
-    protected function getValueForLocale($values, $locale)
-    {
-        if (!$this->checkLocaleExists($values, $locale)) {
-            return false;
-        }
-
-        if (!$this->checkLocaleExists($values, config('app.fallback_locale'))) {
-            return false;
-        }
-
-        return $values[$locale];
-    }
-
-    /**
-     * Check to see if the locale is contained in the translation json,
-     * if not check for fallback.
-     *
-     * @param Collection $values
-     * @param string     $locale
-     *
-     * @return bool
-     */
-    protected function checkLocaleExists($values, $locale)
-    {
-        if (array_has($values, $locale)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the loaded Laravel File loader.
+     * Get the Laravel File loader.
      *
      * @return FileLoader
      */
-    public function getFileLoader()
+    public function getFileLoader() : FileLoader
     {
         return $this->laravelFileLoader;
     }

@@ -6,8 +6,8 @@
 
 ## Description
 
-This package will allow you to manage your translation strings in the database while using the file translations as a 
-fallback.
+This package extends the functionality of [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) 
+and will allow you to manage your translation strings in the database while using the file based translations as a fallback.
 
 The fallback priority is as follows: 
 
@@ -51,15 +51,20 @@ translations
 
 #### Working with translations
 
-Add: `use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;`
+Add: `use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;` and inject it into your `__construct()` or method.
 
-and inject it into your `__construct()` or method.
+1. To retrieve all of the translations from the database: `$translationRepository->all($related = [], $perPage)`
+
+2. Get a group of keys by namespace and group: `$translationRepository->getItems($namespace, $group)`
+
+3. Get a specific key `$translationRepository->getItem($namespace, $group, $key)`
+
 
 There are 2 included methods for updating translations via the translations repository.
 
-1. `$translationRepository->updateTranslationById($id, $locale, $value, $overwrite = true)`
+1. `$translationRepository->updateTranslationById($id, $locale, $value, $overwrite)`
 
-2. `$translationRepository->updateTranslations(Translation $line, $locale, $value, $overwrite = true)`
+2. `$translationRepository->updateTranslation(Translation $line, $locale, $value, $overwrite)`
 
 The second method requires an instance of the translation model.
 
@@ -69,6 +74,7 @@ The optional 4th parameter controls whether the new translation will overwrite t
 
 - `PHP >=7.0`
 - `Laravel ~5.4`
+- `spatie/laravel-translatable ^1.2`
 
 
 ## Installation

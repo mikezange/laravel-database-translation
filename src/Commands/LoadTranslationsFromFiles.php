@@ -127,7 +127,7 @@ class LoadTranslationsFromFiles extends Command
         foreach ($lines as $key => $value) {
             $line = $this->translationRepository->getItem($namespace, $group, $key);
             if ($line) {
-                $this->translationRepository->updateTranslations($line, $this->locale, $value, false);
+                $this->translationRepository->updateTranslation($line, $this->locale, $value, false);
             } else {
                 $attributes = [
                     'namespace' => $namespace,
@@ -135,7 +135,7 @@ class LoadTranslationsFromFiles extends Command
                     'key'       => $key,
                     'values'    => [
                         "{$locale}" => $value,
-                    ],
+                    ]
                 ];
                 $this->translationRepository->create($attributes);
             }
