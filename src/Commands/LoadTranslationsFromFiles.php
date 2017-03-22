@@ -135,7 +135,7 @@ class LoadTranslationsFromFiles extends Command
                     'key'       => $key,
                     'values'    => [
                         "{$locale}" => $value,
-                    ]
+                    ],
                 ];
                 $this->translationRepository->create($attributes);
             }
