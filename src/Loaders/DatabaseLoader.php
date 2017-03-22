@@ -96,7 +96,7 @@ class DatabaseLoader implements LoaderInterface
 
         $cacheKey = "translations.{$locale}.{$namespace}.{$group}";
 
-        $translations = $this->cache->remember($cacheKey, 60, function () use ($locale, $namespace, $group) {
+        $translations = $this->cache->remember($cacheKey, 1440, function () use ($locale, $namespace, $group) {
             return $this->loadCombinedTranslations($locale, $group, $namespace);
         });
 
