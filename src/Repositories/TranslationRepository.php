@@ -2,8 +2,8 @@
 
 namespace MikeZange\LaravelDatabaseTranslation\Repositories;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Cache\Repository as CacheRepository;
+use Illuminate\Foundation\Application;
 use MikeZange\LaravelDatabaseTranslation\Models\Translation;
 
 /**
