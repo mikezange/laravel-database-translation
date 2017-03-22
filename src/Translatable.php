@@ -10,14 +10,11 @@ trait Translatable
 
     /**
      * @param string $key
-     *
      * @param string $locale
-     * @param bool $useFallbackLocale
+     * @param bool   $useFallbackLocale
      *
      * @return mixed|string
      */
-
-
     protected function normalizeLocale(string $key, string $locale, bool $useFallbackLocale) : string
     {
         if (in_array($locale, $this->getTranslatedLocales($key))) {
