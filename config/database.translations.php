@@ -23,4 +23,14 @@ return [
     |
     */
     'model' => \MikeZange\LaravelDatabaseTranslation\Models\Translation::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable caching of translations
+    |--------------------------------------------------------------------------
+    |
+    | Available options true / false
+    |
+    */
+    'cache_enabled' => true,
 ];

@@ -88,12 +88,19 @@ class DatabaseLoader implements LoaderInterface
      */
     public function load($locale, $group, $namespace = null)
     {
-        $cacheKey = "{$locale}.{$namespace}.{$group}";
-        $cacheTags = $this->cache->tags(['translations']);
+        $cacheEnabled = config('database.translations.cache_enabled');
 
-        return $cacheTags->remember($cacheKey, 60, function () use ($locale, $namespace, $group) {
+        if (!$cacheEnabled) {
+            return $this->loadCombinedTranslations($locale, $group, $namespace);
+        }
+
+        $cacheKey = "translations.{$locale}.{$namespace}.{$group}";
+
+        $translations = $this->cache->remember($cacheKey, 60, function () use ($locale, $namespace, $group) {
             return $this->loadCombinedTranslations($locale, $group, $namespace);
         });
+
+        return $translations;
     }
 
     /**

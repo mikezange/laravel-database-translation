@@ -24,6 +24,10 @@ In a Service Provider `app('translator')->addNamespace('namespace', 'path/to/nam
 
 and `trans('namespace::group.key')`, `__('namepace::group.key')` or `@lang('namepace::group.key')` to display
 
+By default the translations are cached for 1 day with the key `{$locale}.{$namespace}.{$group}`, caching can be 
+disabled in the config file.
+
+The cache for a translation group is refreshed when one of the lines is updated via the translation repository.
 
 ### Importing translation files
 
@@ -90,3 +94,7 @@ The optional 4th parameter controls whether the new translation will overwrite t
 5. Edit the config at `config/database.translations.php` to your requirements, the defaults should be okay for most uses
 
 6. Run `php artisan migrate` to create the database table
+
+## To Do
+
+- Allow configuration of caching time

@@ -3,6 +3,7 @@
 namespace MikeZange\LaravelDatabaseTranslation\Repositories;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Cache\Repository as CacheRepository;
 use MikeZange\LaravelDatabaseTranslation\Models\Translation;
 
 /**
@@ -12,6 +13,7 @@ class TranslationRepository
 {
     protected $model;
     protected $app;
+    protected $cache;
     protected $errors = null;
 
     /**
@@ -19,10 +21,11 @@ class TranslationRepository
      *
      *  @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, CacheRepository $cache)
     {
         $this->model = $app->make(config('database.translations.model'));
         $this->app = $app;
+        $this->cache = $cache;
     }
 
     /**
@@ -110,9 +113,9 @@ class TranslationRepository
     public function getItems($namespace, $group)
     {
         return $this->model
-             ->where('namespace', $namespace)
-             ->where('group', $group)
-             ->get();
+            ->where('namespace', $namespace)
+            ->where('group', $group)
+            ->get();
     }
 
     /**
@@ -183,7 +186,7 @@ class TranslationRepository
                 $translations = array_merge($translations, ["{$locale}" => $value]);
             }
         }
-
+        $this->cache->forget("translations.{$locale}.{$line->namespace}.{$line->group}");
         $line->values = $translations;
 
         return $this->save($line);
