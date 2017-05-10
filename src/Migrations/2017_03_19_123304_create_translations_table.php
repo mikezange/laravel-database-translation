@@ -34,6 +34,6 @@ class CreateTranslationsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists(config('database.translations.table'));
     }
 }
