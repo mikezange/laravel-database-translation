@@ -4,6 +4,9 @@
 
 #Laravel Database Translations
 
+For Laravel <= 5.4 use version 0.2.x
+For Laravel >= 5.5 user version 1.x
+
 ## Description
 
 This package extends the functionality of [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) 
@@ -73,8 +76,8 @@ The optional 4th parameter controls whether the new translation will overwrite t
 ## Requirements
 
 - `PHP >=7.0`
-- `Laravel ~5.4`
-- `spatie/laravel-translatable ^1.2`
+- `Laravel ~5.5`
+- `spatie/laravel-translatable ^2.1`
 
 
 ## Installation
@@ -85,13 +88,11 @@ The optional 4th parameter controls whether the new translation will overwrite t
 
     `composer require mike-zange/laravel-database-translation`
     
-2. **REPLACE** the following Service Provider in `config/app.php`:
+2. **Comment** the following Service Provider in `config/app.php`:
     
     `Illuminate\Translation\TranslationServiceProvider::class,`
     
-    With the one from this package:
-    
-    `MikeZange\LaravelDatabaseTranslation\TranslationServiceProvider::class,`
+    The new service provider is auto-loaded in laravel 5.5
     
 3. Publish the configuration file `database.translations.php`
 
