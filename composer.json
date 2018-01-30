@@ -1,5 +1,5 @@
 {
-    "name": "mike-zange/laravel-database-translations",
+    "name": "mike-zange/laravel-database-translation",
     "description": "A Laravel package to load translation strings from database with fallback to file system",
     "keywords": ["laravel", "translation", "language", "database"],
     "type": "library",
