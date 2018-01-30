@@ -3,10 +3,10 @@
 namespace MikeZange\LaravelDatabaseTranslation\Loaders;
 
 use Illuminate\Cache\Repository as CacheRepository;
+use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\FileLoader;
-use Illuminate\Contracts\Translation\Loader;
 use MikeZange\LaravelDatabaseTranslation\Models\Translation;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
 
