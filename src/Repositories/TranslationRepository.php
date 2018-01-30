@@ -180,7 +180,7 @@ class TranslationRepository
      **/
     public function updateTranslation(Translation $line, $locale, $value, $overwrite = true) : bool
     {
-        if (empty($line->getTranslation('values', $locale)) || $overwrite) {
+        if (empty($line->getTranslation('values', $locale, false)) || $overwrite) {
             $line->setTranslation('values', $locale, $value);
         }
 
