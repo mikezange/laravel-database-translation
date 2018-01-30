@@ -17,7 +17,7 @@ class LoadTranslationsFromFiles extends Command
      *
      * @var string
      */
-    protected $signature = 'trans-db:load {locale}';
+    protected $signature = 'trans-db:load {locale} {--json}';
 
     /**
      * The console command description.
@@ -65,7 +65,7 @@ class LoadTranslationsFromFiles extends Command
         parent::__construct();
 
         //this is so we can benefit from namespaces that are already loaded
-        $this->laravelLoader = app()['translator']->getLoader()->getFileLoader();
+        $this->laravelLoader = app()['translator']->getLoader();
         $this->translationRepository = $translationRepository;
         $this->filesystem = $filesystem;
     }
@@ -83,7 +83,7 @@ class LoadTranslationsFromFiles extends Command
 
         $this->loadNameSpacedLines();
 
-        return $this->info('Complete');
+        $this->info('Complete');
     }
 
     protected function loadGroupLines()

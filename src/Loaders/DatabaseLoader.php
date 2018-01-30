@@ -6,14 +6,14 @@ use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\FileLoader;
-use Illuminate\Translation\LoaderInterface;
+use Illuminate\Contracts\Translation\Loader;
 use MikeZange\LaravelDatabaseTranslation\Models\Translation;
 use MikeZange\LaravelDatabaseTranslation\Repositories\TranslationRepository;
 
 /**
  * Class DatabaseLoader.
  */
-class DatabaseLoader implements LoaderInterface
+class DatabaseLoader implements Loader
 {
     /**
      * The filesystem instance.
@@ -237,5 +237,10 @@ class DatabaseLoader implements LoaderInterface
     public function getFileLoader() : FileLoader
     {
         return $this->laravelFileLoader;
+    }
+
+    public function addJsonPath($path)
+    {
+        //
     }
 }

@@ -127,7 +127,7 @@ class TranslationRepository
      *  @param  string $group
      *  @param  string $key
      *
-     *  @return \Illuminate\Database\Eloquent\Builder
+     *  @return Translation
      */
     public function getItem($namespace, $group, $key)
     {
