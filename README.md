@@ -5,7 +5,8 @@
 #Laravel Database Translations
 
 For Laravel <= 5.4 use version 0.2.x
-For Laravel >= 5.5 user version 1.x
+
+For Laravel >= 5.5 use version 1.x
 
 ## Description
 
